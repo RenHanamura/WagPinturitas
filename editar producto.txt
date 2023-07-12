@@ -1,0 +1,96 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.DriverManager"%>
+<%@page import="java.sql.Statement"%>
+<%@page import="java.sql.Connection"%>
+<%@page import="java.util.Iterator"%>
+<%@page import="Model.Productos"%>
+<%@page import="java.util.List"%>
+<%@page import="DAO.ProductoDAO"%>
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Pinturitas</title>
+        <style><%@include file="/css/Esilos.css"%></style>
+    </head>
+    <body bgcolor="#131315" text="black">
+        <tr>
+            <td> <img src="img/logo.jpg" width="160" height="180"></a></td>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <td> <a href="index.jsp"><img src="img/menuini.jpg" height="40"></a></td>
+            &nbsp; &nbsp;
+            <td> <a href="nosotros.sjp"><img src="img/menucono.jpg" width="300" height="40"></a></td>
+            &nbsp; &nbsp;
+            <td> <a href="productos.jsp"><img src="img/menuprodu.jpg" width="300" height="40"></a></td>
+            &nbsp; &nbsp;
+            <td> <a href="contacto.jsp"><img src="img/menuconta.jpg" width="300" height="40"></a></td>
+        </tr>
+        <div class="login-bocs">
+            <form method="post">
+                <h2>Productos</h2>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>ID de Producto</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <%
+                        double totalPagar = 0; // Variable para almacenar la suma de los totales
+                        try {
+                            Class.forName("com.mysql.jdbc.Driver");
+                            String url = "jdbc:mysql://localhost:3306/wags_pinturitas";
+                            String username = "root";
+                            String password = "";
+                            String query = "select * from tienda";
+                            Connection conn = DriverManager.getConnection(url, username, password);
+                            Statement stmt = conn.createStatement();
+                            ResultSet rs = stmt.executeQuery(query);
+                            while (rs.next()) {
+                                %>
+                                <tbody>
+                                    <tr>               
+                                        <td><%= rs.getInt("AriculoID")%></td>
+                                        <td><%= rs.getString("NombreArt")%></td>
+                                        <td><%= rs.getDouble("PrecioArt")%></td>
+                                        <td>
+                                            <input type="number" id="cant_<%= rs.getInt("AriculoID")%>" name="cant_<%= rs.getInt("AriculoID")%>">
+                                            <button type="submit" name="add_<%= rs.getInt("AriculoID")%>">Añadir</button>
+                                        </td>
+                                        <% 
+                                        int canti = 0;
+                                        String cantiParam = request.getParameter("cant_" + rs.getInt("AriculoID"));
+                                        if (cantiParam != null && !cantiParam.isEmpty()) {
+                                            canti = Integer.parseInt(cantiParam);
+                                        }
+                                        double total = canti * rs.getDouble("PrecioArt");
+                                        totalPagar += total; // Agregar el total al valor acumulado
+                                        %>
+                                        <td><%= total%></td>
+                                    </tr>
+                                </tbody>
+                                <br>
+                                <% 
+                            }
+                            rs.close();
+                            stmt.close();
+                            conn.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    %>
+                </table>
+                <table border="1">
+                    <thead>
+                        <tr>
+                            <th>A pagar: <%= totalPagar %></th>
+                        </tr>
+                    </thead>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>
