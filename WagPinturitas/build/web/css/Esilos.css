@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap');
+:root {
+    --font-style: 'Nunito Sans', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-style);
+}
+
+.login-bocs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1000px;
+    padding: 60px;
+    transform: translate(-50%, -50%);
+    background: #242026;
+    box-shadow: 0 15px 25px rgba(36, 149, 255, 1);
+    border-radius: 10px;
+}
+
+.login-bocs h2 {
+    margin: 0 0 30px;
+    padding: 0;
+    color: #fff;
+    text-align: center;
+}
+
+.login-bocs table{
+    position: relative;
+    width: 100%;
+    font-size: 16px;
+    color: #fff;
+    border-spacing: 1; 
+    border-collapse: collapse; 
+    border-radius:6px;
+    border-color: #aee8f5;
+    overflow:hidden;
+    max-width:800px; 
+    width:100%;
+    margin:0 auto;
+    position:relative;
+}
+
+.login-bocs thead{
+    background: #0084ff;
+}
+
+.login-bocs td{
+    padding: 18px 0px;
+    text-align: center;
+}
